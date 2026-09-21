@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
-@import 'tailwindcss';
+@import 'tailwindcss' source('../');
 
 @theme {
   /* Paleta institucional derivada da logo PraCafé: verde da marca, vermelho-cereja das frutas, areia (ráfia) e grafite. */
@@ -65,7 +65,7 @@
 
 /* Botões institucionais: retos e sólidos */
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 font-semibold text-sm sm:text-base transition-[transform,background-color,color,box-shadow,border-color] duration-300 ease-out-expo will-change-transform;
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 font-semibold whitespace-nowrap text-sm sm:text-base transition-[transform,background-color,color,box-shadow,border-color] duration-300 ease-out-expo will-change-transform;
 }
 @utility btn-primary { @apply btn bg-cereja-500 text-white hover:bg-cereja-600 hover:-translate-y-0.5 shadow-[0_10px_24px_-14px_rgb(184_51_44/0.7)]; }
 @utility btn-dark { @apply btn bg-verde-900 text-white hover:bg-verde-800 hover:-translate-y-0.5; }
