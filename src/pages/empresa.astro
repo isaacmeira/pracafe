@@ -1,0 +1,103 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CTA from '../components/CTA.astro';
+import { site, valores, numeros } from '../data/site';
+
+const fatos = [
+  { icone: 'lucide:calendar-check', titulo: 'Desde 2004', texto: 'Comercial Pra Café Ltda, fundada em 5 de maio de 2004 no bairro Bom Jardim, em Manhuaçu-MG.' },
+  { icone: 'lucide:printer-check', titulo: 'Impressão em até 6 cores', texto: 'Sacaria em até 6 cores e big bag em até 3 cores, com arte e medidas do cliente.' },
+  { icone: 'lucide:map', titulo: 'MG · ES · BA · RJ', texto: 'Clientes em Minas Gerais, Espírito Santo, Bahia e Rio de Janeiro: produtores, armazéns, indústrias e revendas.' },
+  { icone: 'lucide:layers', titulo: '8 linhas de produto', texto: 'Big bags, sacaria, sacos impressos, panos e lonas, fitilhos, marca própria, tecidos, fios e acessórios.' },
+];
+---
+<Base title="Empresa" description="A PraCafé Embalagens é indústria de embalagens de polipropileno (ráfia) desde 2004 em Manhuaçu-MG. Missão, visão, valores e história.">
+  <section class="relative bg-verde-950 text-areia-50 overflow-hidden grain" data-parallax-root>
+    <div class="absolute inset-0 weave opacity-60"></div>
+    <div class="container-x relative pt-36 pb-20 sm:pt-44 sm:pb-28 grid gap-12 lg:grid-cols-12 items-end">
+      <div class="lg:col-span-8">
+        <p class="eyebrow text-verde-300 mb-5" data-reveal="up">Sobre a PraCafé</p>
+        <h1 class="display-xl" data-split="words">Indústria de embalagens de ráfia desde 2004.</h1>
+        <p class="mt-7 max-w-2xl text-lg sm:text-xl text-areia-100/75" data-reveal="up" data-reveal-delay="400">Atuamos no mercado de embalagens desde {site.fundacao}, especializados na fabricação e comercialização de embalagens de polipropileno. Do pano de colheita ao big bag certificado, cada produto sai de Manhuaçu para reduzir custo de armazenagem, frete e movimentação dos nossos clientes.</p>
+      </div>
+      <div class="lg:col-span-4 grid grid-cols-2 gap-3" data-stagger="120">
+        {numeros.slice(0, 4).map((n) => <div class="rounded-md bg-white/6 ring-1 ring-white/10 p-5" data-reveal="up"><span class="block font-display font-bold text-3xl text-verde-300" data-count={n.valor} data-suffix={n.sufixo}>0</span><span class="text-xs text-areia-100/70">{n.label}</span></div>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- fotos + texto -->
+  <section class="container-x py-20 sm:py-28 grid gap-12 lg:grid-cols-12 items-center">
+    <div class="lg:col-span-6 grid grid-cols-2 gap-4" data-stagger="120">
+      <figure class="rounded-lg overflow-hidden aspect-[3/4] bg-areia-100 mt-10" data-reveal="scale"><img src="/img/empresa/about1.jpg" alt="Produção de embalagens PraCafé" class="size-full object-cover" /></figure>
+      <figure class="rounded-lg overflow-hidden aspect-[3/4] bg-areia-100" data-reveal="scale"><img src="/img/empresa/about2.jpg" alt="Sacaria PraCafé" class="size-full object-cover" /></figure>
+      <figure class="col-span-2 rounded-lg overflow-hidden aspect-[16/9] bg-areia-100" data-reveal="scale"><img src="/img/aplicacoes/cafeicultura/20120525colheita.jpg" alt="Colheita de café com pano PraCafé" class="size-full object-cover" /></figure>
+    </div>
+    <div class="lg:col-span-6">
+      <SectionHead eyebrow="Quem somos" title="Serviço personalizado em ráfia, nos mais diversos tamanhos e modelos." />
+      <div class="mt-6 space-y-4 text-grafite-700 leading-relaxed" data-stagger="120">
+        <p data-reveal="up">Estamos preparados para um atendimento de qualidade e personalizado, com capacidade para produzir sacaria em 6 cores, big bag em 3 cores e todo tipo de embalagem de ráfia sob medida.</p>
+        <p data-reveal="up">As parcerias em Minas Gerais, Espírito Santo, Bahia e Rio de Janeiro resultam da aceitação dos produtos, que se traduzem em segurança e redução dos custos de armazenagem, frete e movimentação de carga e descarga.</p>
+        <p data-reveal="up">Atendemos cafeicultores, cooperativas, armazéns gerais, usinas, mineradoras, indústrias químicas e revendedores e distribuidores que levam a marca Pra Café às agropecuárias.</p>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3" data-stagger="80">
+        {['Cafeicultura', 'Agricultura', 'Armazéns gerais', 'Indústria', 'Mineração', 'Química', 'Revenda'].map((t) => <span class="rounded-full bg-areia-100 ring-1 ring-verde-900/10 px-3 py-1.5 text-sm font-medium" data-reveal="scale">{t}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- missão visão -->
+  <section class="bg-verde-900 text-areia-50 py-20 sm:py-28 grain">
+    <div class="container-x grid gap-6 lg:grid-cols-2">
+      <div class="rounded-lg bg-white/5 ring-1 ring-white/10 p-8 sm:p-10" data-reveal="left">
+        <Icon name="lucide:target" class="size-8 text-verde-300" />
+        <p class="eyebrow text-verde-300 mt-6 mb-3">Missão</p>
+        <p class="font-display text-2xl sm:text-3xl font-semibold tracking-tight leading-snug">Oferecer soluções inovadoras em embalagens de ráfia para os mais variados segmentos do mercado, a preços justos, pautados pela qualidade e pela transparência nas relações comerciais.</p>
+      </div>
+      <div class="rounded-lg bg-verde-300 text-verde-950 p-8 sm:p-10" data-reveal="right">
+        <Icon name="lucide:eye" class="size-8" />
+        <p class="eyebrow mt-6 mb-3">Visão</p>
+        <p class="font-display text-2xl sm:text-3xl font-semibold tracking-tight leading-snug">Ser reconhecida nacionalmente pela excelência em qualidade de produtos, inovação e satisfação do cliente, e pelos colaboradores como um ambiente que promove desenvolvimento profissional.</p>
+      </div>
+    </div>
+    <div class="container-x mt-12">
+      <p class="eyebrow text-verde-300 mb-6" data-reveal="up">Valores</p>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4" data-stagger="90">
+        {valores.map((v) => <li class="rounded-md bg-white/5 ring-1 ring-white/10 p-6" data-reveal="up"><Icon name={v.icone} class="size-6 text-verde-300" /><h3 class="font-display font-bold text-lg mt-4">{v.titulo}</h3><p class="text-sm text-areia-100/70 mt-1">{v.texto}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- fatos -->
+  <section class="container-x py-20 sm:py-28">
+    <SectionHead eyebrow="A empresa" title="Dados da PraCafé." class="mb-12" />
+    <ul class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4" data-stagger="100">
+      {fatos.map((f) => (
+        <li class="card p-7" data-reveal="up">
+          <span class="size-12 rounded-md bg-verde-900 text-verde-300 grid place-items-center"><Icon name={f.icone} class="size-6" /></span>
+          <h3 class="font-display font-bold text-xl text-verde-900 mt-5">{f.titulo}</h3>
+          <p class="text-sm text-grafite-700 leading-relaxed mt-2">{f.texto}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- localização -->
+  <section class="bg-areia-100 py-20 sm:py-28">
+    <div class="container-x grid gap-10 lg:grid-cols-12 items-center">
+      <div class="lg:col-span-5">
+        <SectionHead eyebrow="Onde estamos" title="Manhuaçu, Minas Gerais." text="Fábrica e escritório comercial no bairro Bom Jardim, na região das Matas de Minas, entre Belo Horizonte e Vitória." />
+        <address class="not-italic mt-8 space-y-3 text-verde-900" data-stagger="80">
+          <p class="flex gap-3" data-reveal="up"><Icon name="lucide:map-pin" class="size-5 text-verde-600 shrink-0" /><span>{site.endereco.rua}<br />{site.endereco.bairro}, {site.endereco.cidade} · {site.endereco.uf} · CEP {site.endereco.cep}</span></p>
+          {site.telefones.map((t) => <p class="flex gap-3" data-reveal="up"><Icon name="lucide:phone" class="size-5 text-verde-600 shrink-0" /><a href={`tel:${t.tel}`}>{t.numero} <span class="text-grafite-500">· {t.label}</span></a></p>)}
+        </address>
+      </div>
+      <div class="lg:col-span-7 rounded-lg overflow-hidden ring-1 ring-verde-900/10 bg-white aspect-[16/10]" data-reveal="scale">
+        <iframe title="Mapa PraCafé Manhuaçu" src="https://www.google.com/maps?q=Rua+Neide+Celestino+Maur%C3%ADcio+405+Bom+Jardim+Manhua%C3%A7u+MG&output=embed" class="size-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</Base>

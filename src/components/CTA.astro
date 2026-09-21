@@ -1,0 +1,22 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site, waLink } from '../data/site';
+interface Props { title?: string; text?: string; produto?: string }
+const { title = 'Solicite um orçamento.', text = 'Informe o produto a embalar, a quantidade, as medidas e a impressão. Retornamos com especificação técnica, prazo e preço.', produto } = Astro.props;
+const msg = produto ? `Olá! Gostaria de um orçamento do produto ${produto}.` : undefined;
+---
+<section class="relative overflow-hidden bg-verde-900 text-areia-50 grain" data-parallax-root>
+  <div class="absolute inset-0 weave opacity-50"></div>
+  <div class="container-x relative py-20 sm:py-28 grid gap-10 lg:grid-cols-12 items-end">
+    <div class="lg:col-span-7">
+      <p class="eyebrow text-verde-300 mb-4" data-reveal="up">Orçamento direto da indústria</p>
+      <h2 class="display-lg" data-split="words">{title}</h2>
+      <p class="mt-5 text-areia-100/70 text-lg max-w-xl" data-reveal="up" data-reveal-delay="200">{text}</p>
+    </div>
+    <div class="lg:col-span-5 flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-end" data-stagger="120">
+      <a href={waLink(msg)} target="_blank" rel="noopener" class="btn-primary" data-reveal="up"><Icon name="tabler:brand-whatsapp" class="size-5" /> WhatsApp {site.whatsapp.numero}</a>
+      <a href={`tel:${site.telefones[1].tel}`} class="btn-ghost text-areia-50" data-reveal="up"><Icon name="lucide:phone" class="size-5" /> Televendas {site.telefones[1].numero}</a>
+      <a href="/contato" class="btn-ghost text-areia-50" data-reveal="up"><Icon name="lucide:file-text" class="size-5" /> Formulário de cotação</a>
+    </div>
+  </div>
+</section>

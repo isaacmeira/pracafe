@@ -1,0 +1,50 @@
+---
+import { Icon } from 'astro-icon/components';
+import { bigBagConfig } from '../data/produtos';
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+---
+<div class="space-y-12">
+  <div>
+    <h3 class="display-md text-verde-900 mb-2" data-split="words">Modelos prontos C1 a C6</h3>
+    <p class="text-grafite-700 max-w-2xl" data-reveal="up">Combinações de enchimento superior e descarga inferior. Todos podem ser produzidos em tecido plano com costura ou circular sem costura, com ou sem liner.</p>
+    <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4" data-stagger="70">
+      {bigBagConfig.modelos.map((m) => (
+        <div class="card p-4 flex flex-col items-center text-center gap-3 hover:shadow-lift hover:-translate-y-1 transition-[transform,box-shadow] duration-500" data-reveal="scale">
+          <span class="font-mono text-xs bg-verde-900 text-verde-300 rounded-full px-2.5 py-1">{m.id}</span>
+          <img src={m.img} alt={`Modelo ${m.id}`} loading="lazy" class="h-28 w-auto object-contain mix-blend-multiply" />
+          <p class="text-xs text-grafite-700 leading-snug">{m.texto}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {!compact && (
+    <div class="grid gap-10 lg:grid-cols-2">
+      <div>
+        <h4 class="font-display font-bold text-xl text-verde-900 mb-4 flex items-center gap-2"><Icon name="lucide:hand-grab" class="size-5 text-verde-600" /> Alças de içamento</h4>
+        <div class="grid grid-cols-3 sm:grid-cols-5 gap-3" data-stagger="60">
+          {bigBagConfig.alcas.map((a) => <figure class="card p-3 text-center" data-reveal="up"><img src={a.img} alt={a.nome} loading="lazy" class="h-20 w-auto mx-auto object-contain mix-blend-multiply" /><figcaption class="mt-2 text-[11px] leading-tight text-grafite-700">{a.nome}</figcaption></figure>)}
+        </div>
+      </div>
+      <div>
+        <h4 class="font-display font-bold text-xl text-verde-900 mb-4 flex items-center gap-2"><Icon name="lucide:arrow-down-to-line" class="size-5 text-verde-600" /> Bocas de enchimento</h4>
+        <div class="grid grid-cols-4 gap-3" data-stagger="60">
+          {bigBagConfig.bocas.map((a) => <figure class="card p-3 text-center" data-reveal="up"><img src={a.img} alt={a.nome} loading="lazy" class="h-20 w-auto mx-auto object-contain mix-blend-multiply" /><figcaption class="mt-2 text-[11px] leading-tight text-grafite-700">{a.nome}</figcaption></figure>)}
+        </div>
+      </div>
+      <div>
+        <h4 class="font-display font-bold text-xl text-verde-900 mb-4 flex items-center gap-2"><Icon name="lucide:arrow-down-from-line" class="size-5 text-verde-600" /> Fundos e descarga</h4>
+        <div class="grid grid-cols-4 sm:grid-cols-7 gap-3" data-stagger="50">
+          {bigBagConfig.fundos.map((a) => <figure class="card p-3 text-center" data-reveal="up"><img src={a.img} alt={a.nome} loading="lazy" class="h-16 w-auto mx-auto object-contain mix-blend-multiply" /><figcaption class="mt-2 text-[10px] leading-tight text-grafite-700">{a.nome}</figcaption></figure>)}
+        </div>
+      </div>
+      <div>
+        <h4 class="font-display font-bold text-xl text-verde-900 mb-4 flex items-center gap-2"><Icon name="lucide:shield" class="size-5 text-verde-600" /> Liners de polietileno</h4>
+        <div class="grid grid-cols-4 gap-3" data-stagger="60">
+          {bigBagConfig.liners.map((a) => <figure class="card p-3 text-center" data-reveal="up"><img src={a.img} alt={a.nome} loading="lazy" class="h-20 w-auto mx-auto object-contain mix-blend-multiply" /><figcaption class="mt-2 text-[11px] leading-tight text-grafite-700">{a.nome}</figcaption></figure>)}
+        </div>
+      </div>
+    </div>
+  )}
+</div>

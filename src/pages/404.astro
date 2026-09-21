@@ -1,0 +1,15 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+---
+<Base title="Página não encontrada" noindex>
+  <section class="container-x min-h-[80svh] flex flex-col items-center justify-center text-center pt-24">
+    <p class="font-mono text-verde-300 bg-verde-900 rounded-full px-4 py-1.5 text-sm" data-reveal="scale">404</p>
+    <h1 class="display-lg text-verde-900 mt-6" data-split="words">Página não encontrada.</h1>
+    <p class="mt-5 text-grafite-700 max-w-md" data-reveal="up">O endereço pode ter mudado com o novo site. Use o catálogo ou volte para a página inicial.</p>
+    <div class="mt-8 flex gap-3" data-stagger="100">
+      <a href="/" class="btn-dark" data-reveal="up"><Icon name="lucide:arrow-left" class="size-5" /> Início</a>
+      <a href="/produtos" class="btn-ghost text-verde-900" data-reveal="up">Catálogo <Icon name="lucide:arrow-right" class="size-5" /></a>
+    </div>
+  </section>
+</Base>

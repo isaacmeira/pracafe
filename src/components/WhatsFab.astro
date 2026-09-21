@@ -1,0 +1,9 @@
+---
+import { Icon } from 'astro-icon/components';
+import { waLink, site } from '../data/site';
+---
+<a id="wa-fab" href={waLink()} target="_blank" rel="noopener" aria-label={`Falar no WhatsApp ${site.whatsapp.numero}`}
+   class="fixed z-40 bottom-5 right-5 sm:bottom-7 sm:right-7 size-14 grid place-items-center rounded-full bg-[#25D366] text-white shadow-lift opacity-0 hover:scale-105 transition-transform">
+  <span class="wa-pulse absolute inset-0 rounded-full bg-[#25D366] -z-10"></span>
+  <Icon name="tabler:brand-whatsapp" class="size-7" />
+</a>

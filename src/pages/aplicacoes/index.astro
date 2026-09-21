@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import AplicacaoCard from '../../components/AplicacaoCard.astro';
+import CTA from '../../components/CTA.astro';
+import { aplicacoes, mercados } from '../../data/site';
+---
+<Base title="Aplicações" description="Embalagens de ráfia por segmento: cafeicultura, agricultura e grãos, armazéns e logística, indústria e mineração, química e cargas perigosas, revendedores.">
+  <section class="container-x pt-32 pb-12 sm:pt-40">
+    <SectionHead as="h1" eyebrow="Aplicações por mercado" title="Produtos indicados por segmento." text="Gramatura, fator de segurança, barreira e impressão variam conforme o produto embalado. Selecione o segmento para ver as linhas recomendadas." />
+  </section>
+  <section class="container-x pb-20">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-stagger="100">
+      {aplicacoes.map((a, i) => <AplicacaoCard app={a} tall={i === 0} />)}
+    </div>
+  </section>
+  <section class="bg-verde-950 text-areia-50 py-6 overflow-hidden marquee" aria-label="Mercados">
+    <div class="marquee-track flex w-max gap-10 whitespace-nowrap font-display font-bold text-xl uppercase tracking-tight text-areia-100/70">
+      {[...mercados, ...mercados].map((m) => <span class="inline-flex items-center gap-10"><span>{m}</span><span class="size-2 rounded-full bg-verde-300"></span></span>)}
+    </div>
+  </section>
+  <CTA />
+</Base>

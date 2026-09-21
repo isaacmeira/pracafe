@@ -1,0 +1,27 @@
+---
+/**
+ * Logo oficial PraCafé.
+ * - `variant="horizontal"` (padrão): lockup marca + wordmark + tagline, composto a partir da logo padrão (Instagram).
+ * - `variant="stacked"`: logo padrão empilhada (marca sobre o nome).
+ * - `variant="mark"`: apenas a marca redonda (swirl + cerejas).
+ * `light` = versão branca para fundos escuros. Com `swap`, troca para a versão escura quando o cabeçalho rola (.is-scrolled).
+ */
+interface Props { class?: string; light?: boolean; swap?: boolean; height?: number; variant?: 'horizontal' | 'stacked' | 'mark' }
+const { class: cls = '', light = false, swap = false, height = 40, variant = 'horizontal' } = Astro.props;
+const files = {
+  horizontal: { dark: '/img/brand/logo-horizontal.png', light: '/img/brand/logo-horizontal-branca.png', ratio: 1620 / 340 },
+  stacked: { dark: '/img/brand/logo-padrao.png', light: '/img/brand/logo-padrao-branca.png', ratio: 1040 / 610 },
+  mark: { dark: '/img/brand/marca-480.png', light: '/img/brand/marca-480.png', ratio: 736 / 530 },
+}[variant];
+const w = Math.round(height * files.ratio);
+---
+<a href="/" class:list={['inline-flex items-center select-none logo shrink-0', cls]} aria-label="PraCafé Embalagens, página inicial" style={`height:${height}px`}>
+  <img class:list={['logo-light w-auto', !light && 'hidden']} src={files.light} height={height} width={w} style={`height:${height}px`} alt="PraCafé Embalagens" decoding="async" fetchpriority="high" />
+  <img class:list={['logo-dark w-auto', light && 'hidden']} src={files.dark} height={height} width={w} style={`height:${height}px`} alt="PraCafé Embalagens" decoding="async" fetchpriority="high" />
+</a>
+{swap && (
+  <style is:global>
+    #site-header.is-scrolled .logo-light { display: none; }
+    #site-header.is-scrolled .logo-dark { display: inline; }
+  </style>
+)}

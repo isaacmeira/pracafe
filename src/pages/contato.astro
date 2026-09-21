@@ -1,0 +1,36 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import FormPlaceholder from '../components/FormPlaceholder.astro';
+import { site, waLink } from '../data/site';
+---
+<Base title="Contato e orçamento" description="Solicite um orçamento de big bags, sacaria, panos de colheita e embalagens de ráfia. WhatsApp, televendas e formulário.">
+  <section class="container-x pt-32 pb-12 sm:pt-40">
+    <SectionHead as="h1" eyebrow="Fale com a PraCafé" title="Solicite um orçamento direto da indústria." text="Informe o produto a embalar, quantidade, medidas e impressão. Respondemos com especificação técnica, prazo e condições." />
+  </section>
+
+  <section class="container-x pb-20 sm:pb-28 grid gap-10 lg:grid-cols-12">
+    <div class="lg:col-span-4 space-y-4" data-stagger="100">
+      <a href={waLink()} target="_blank" rel="noopener" class="card p-6 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lift transition-[transform,box-shadow] bg-[#25D366]/10 !ring-[#25D366]/30" data-reveal="up">
+        <span class="size-12 rounded-md bg-[#25D366] text-white grid place-items-center shrink-0"><Icon name="tabler:brand-whatsapp" class="size-6" /></span>
+        <span><span class="eyebrow text-grafite-500 block">WhatsApp</span><span class="font-display font-bold text-lg text-verde-900">{site.whatsapp.numero}</span></span>
+      </a>
+      {site.telefones.map((t) => (
+        <a href={`tel:${t.tel}`} class="card p-6 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lift transition-[transform,box-shadow]" data-reveal="up">
+          <span class="size-12 rounded-md bg-verde-900 text-verde-300 grid place-items-center shrink-0"><Icon name="lucide:phone" class="size-6" /></span>
+          <span><span class="eyebrow text-grafite-500 block">{t.label}</span><span class="font-display font-bold text-lg text-verde-900">{t.numero}</span></span>
+        </a>
+      ))}
+      <div class="card p-6 flex items-start gap-4" data-reveal="up">
+        <span class="size-12 rounded-md bg-verde-900 text-verde-300 grid place-items-center shrink-0"><Icon name="lucide:map-pin" class="size-6" /></span>
+        <address class="not-italic text-sm text-grafite-700 leading-relaxed"><span class="eyebrow text-grafite-500 block mb-1">Fábrica</span>{site.endereco.rua}<br />{site.endereco.bairro}, {site.endereco.cidade} · {site.endereco.uf}<br />CEP {site.endereco.cep}</address>
+      </div>
+    </div>
+    <div class="lg:col-span-8"><FormPlaceholder tipo="orcamento" titulo="Solicitar cotação" /></div>
+  </section>
+
+  <section class="rounded-none overflow-hidden aspect-[16/7] min-h-[320px] bg-areia-100" data-reveal="up">
+    <iframe title="Mapa PraCafé Manhuaçu" src="https://www.google.com/maps?q=Rua+Neide+Celestino+Maur%C3%ADcio+405+Bom+Jardim+Manhua%C3%A7u+MG&output=embed" class="size-full border-0 grayscale-[30%]" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>
+</Base>

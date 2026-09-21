@@ -1,0 +1,45 @@
+---
+/** Formulário apenas visual (placeholder): não envia dados. */
+import { Icon } from 'astro-icon/components';
+import { waLink } from '../data/site';
+interface Props { tipo?: 'orcamento' | 'contato' | 'representante' | 'curriculo'; titulo?: string }
+const { tipo = 'orcamento', titulo } = Astro.props;
+const campos: Record<string, { label: string; type?: string; span?: boolean; opts?: string[] }[]> = {
+  orcamento: [
+    { label: 'Nome' }, { label: 'Empresa' }, { label: 'E-mail', type: 'email' }, { label: 'Telefone / WhatsApp', type: 'tel' },
+    { label: 'Cidade / UF' }, { label: 'Segmento', opts: ['Cafeicultura', 'Agricultura e grãos', 'Armazém / logística', 'Indústria / mineração', 'Química / cargas perigosas', 'Revenda / distribuição'] },
+    { label: 'Produto', opts: ['Big bag', 'Sacaria', 'Saco impresso', 'Pano / lona de colheita', 'Barbante / fitilho', 'Tecido de ráfia', 'Fios e acessórios', 'Marca própria'] },
+    { label: 'Quantidade estimada' }, { label: 'Medidas, gramatura, impressão e observações', type: 'textarea', span: true },
+  ],
+  contato: [{ label: 'Nome' }, { label: 'E-mail', type: 'email' }, { label: 'Telefone', type: 'tel' }, { label: 'Cidade / UF' }, { label: 'Mensagem', type: 'textarea', span: true }],
+  representante: [{ label: 'Nome' }, { label: 'E-mail', type: 'email' }, { label: 'Telefone / WhatsApp', type: 'tel' }, { label: 'Cidade / UF' }, { label: 'Região de atuação' }, { label: 'Empresas representadas' }, { label: 'Como nos conheceu', span: true }],
+  curriculo: [{ label: 'Nome' }, { label: 'E-mail', type: 'email' }, { label: 'Telefone', type: 'tel' }, { label: 'Cidade' }, { label: 'Cargo de interesse', opts: ['Costureiro(a)', 'Embalador(a)', 'Motorista', 'Produção', 'Administrativo', 'Comercial'] }, { label: 'Pretensão salarial' }, { label: 'Resumo profissional', type: 'textarea', span: true }],
+};
+const lista = campos[tipo];
+---
+<form class="card p-6 sm:p-8 grid gap-5 sm:grid-cols-2" data-reveal="up" onsubmit="event.preventDefault(); this.querySelector('[data-ok]').hidden=false;">
+  {titulo && <h3 class="sm:col-span-2 font-display font-bold text-2xl tracking-tight text-verde-900">{titulo}</h3>}
+  {lista.map((c, i) => (
+    <label class:list={['flex flex-col gap-1.5', c.span && 'sm:col-span-2']}>
+      <span class="eyebrow text-grafite-700">{c.label}</span>
+      {c.type === 'textarea' ? (
+        <textarea rows="4" name={`campo-${i}`} class="rounded-md border border-verde-900/15 bg-white px-4 py-3 focus:border-verde-500 outline-none"></textarea>
+      ) : c.opts ? (
+        <select name={`campo-${i}`} class="rounded-md border border-verde-900/15 bg-white px-4 py-3 focus:border-verde-500 outline-none">
+          <option value="">Selecione</option>
+          {c.opts.map((o) => <option>{o}</option>)}
+        </select>
+      ) : (
+        <input type={c.type ?? 'text'} name={`campo-${i}`} class="rounded-md border border-verde-900/15 bg-white px-4 py-3 focus:border-verde-500 outline-none" />
+      )}
+    </label>
+  ))}
+  <div class="sm:col-span-2 flex flex-col sm:flex-row gap-3 sm:items-center justify-between pt-2">
+    <p class="text-xs text-grafite-500 max-w-sm">Formulário em fase de implantação. Para atendimento imediato, use o WhatsApp.</p>
+    <div class="flex gap-3">
+      <a href={waLink()} target="_blank" rel="noopener" class="btn-ghost text-verde-900"><Icon name="tabler:brand-whatsapp" class="size-5" /> WhatsApp</a>
+      <button type="submit" class="btn-dark">Enviar <Icon name="lucide:arrow-right" class="size-5" /></button>
+    </div>
+  </div>
+  <p data-ok hidden class="sm:col-span-2 rounded-md bg-verde-200/60 text-verde-950 px-4 py-3 text-sm font-medium">Obrigado! Este formulário ainda é demonstrativo. Fale conosco pelo WhatsApp para atendimento imediato.</p>
+</form>

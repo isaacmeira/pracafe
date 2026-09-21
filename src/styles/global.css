@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  /* Paleta institucional derivada da logo PraCafé: verde da marca, vermelho-cereja das frutas, areia (ráfia) e grafite. */
+  --color-verde-950: #15291a;
+  --color-verde-900: #23402a;
+  --color-verde-800: #305038;
+  --color-verde-700: #3a6344;
+  --color-verde-600: #47784f;
+  --color-verde-500: #5a9060;
+  --color-verde-400: #86b58c;
+  --color-verde-300: #b9d6bd;
+  --color-verde-200: #e6efe7;
+  --color-cereja-600: #96261f;
+  --color-cereja-500: #b8332c;
+  --color-cereja-400: #d04a43;
+  --color-areia-50: #f8f7f3;
+  --color-areia-100: #efede6;
+  --color-areia-200: #e1ddd0;
+  --color-areia-300: #cdc6b3;
+  --color-terra-700: #4a3527;
+  --color-terra-800: #2f211a;
+  --color-grafite-900: #161816;
+  --color-grafite-700: #3c403c;
+  --color-grafite-500: #6c716c;
+  --color-grafite-300: #b6bab6;
+
+  --font-display: 'Archivo', 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --breakpoint-xs: 30rem;
+  --container-8xl: 88rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-lift: 0 18px 40px -22px rgb(21 41 26 / 0.35);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-areia-50 text-grafite-900 font-sans antialiased; }
+  ::selection { background: var(--color-verde-300); color: var(--color-verde-950); }
+  h1, h2, h3, h4 { @apply font-display tracking-tight; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  img { @apply max-w-full h-auto; }
+  :focus-visible { outline: 3px solid var(--color-cereja-500); outline-offset: 3px; }
+}
+
+@utility container-x { @apply mx-auto w-full max-w-8xl px-5 sm:px-8 lg:px-12; }
+@utility eyebrow { @apply font-mono text-[11px] sm:text-xs uppercase tracking-[0.16em] font-medium; }
+
+@utility display-xl {
+  font-family: var(--font-display); font-weight: 700; letter-spacing: -0.03em; line-height: 1;
+  font-size: clamp(2.4rem, 6.2vw, 5.25rem);
+}
+@utility display-lg {
+  font-family: var(--font-display); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05;
+  font-size: clamp(2rem, 4.2vw, 3.5rem);
+}
+@utility display-md {
+  font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1;
+  font-size: clamp(1.5rem, 2.8vw, 2.375rem);
+}
+
+/* Botões institucionais: retos e sólidos */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3.5 font-semibold text-sm sm:text-base transition-[transform,background-color,color,box-shadow,border-color] duration-300 ease-out-expo will-change-transform;
+}
+@utility btn-primary { @apply btn bg-cereja-500 text-white hover:bg-cereja-600 hover:-translate-y-0.5 shadow-[0_10px_24px_-14px_rgb(184_51_44/0.7)]; }
+@utility btn-dark { @apply btn bg-verde-900 text-white hover:bg-verde-800 hover:-translate-y-0.5; }
+@utility btn-ghost { @apply btn border border-current/30 hover:border-current/70 hover:-translate-y-0.5; }
+
+/* Card sólido, sem efeito de vidro */
+@utility card { @apply rounded-lg bg-white border border-verde-900/10 shadow-[0_1px_2px_rgb(21_41_26/0.04)]; }
+@utility grain { position: relative; }
+
+/* Trama de ráfia sutil para fundos escuros */
+@utility weave {
+  background-image:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.04) 0 2px, transparent 2px 12px),
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.04) 0 2px, transparent 2px 12px);
+}
+
+/* Estados iniciais das animações (apenas com JS ativo) */
+html.js [data-reveal] { opacity: 0; }
+html.js [data-reveal='up'] { transform: translateY(28px); }
+html.js [data-reveal='left'] { transform: translateX(-28px); }
+html.js [data-reveal='right'] { transform: translateX(28px); }
+html.js [data-reveal='scale'] { transform: scale(0.94); }
+html.js [data-reveal='clip'] { clip-path: inset(0 100% 0 0); opacity: 1; }
+html.js [data-split] .split-word,
+html.js [data-split] .split-char { display: inline-block; opacity: 0; transform: translateY(0.5em); }
+html.js [data-split] { opacity: 1; }
+[data-split] .split-line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal], html.js [data-split] .split-word, html.js [data-split] .split-char {
+    opacity: 1 !important; transform: none !important; clip-path: none !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee-track { animation: marquee var(--marquee-speed, 40s) linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+* { scrollbar-width: thin; scrollbar-color: var(--color-grafite-300) transparent; }

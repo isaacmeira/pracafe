@@ -1,0 +1,77 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsFab from '../components/WhatsFab.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  dark?: boolean; // header sobre fundo escuro
+  noindex?: boolean;
+}
+const { title, description = site.descricao, image = '/img/hero/colheita-bigbag.jpg', dark = false, noindex = false } = Astro.props;
+const fullTitle = title === site.nome ? `${site.nome} · ${site.slogan}` : `${title} · ${site.nome}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://www.pracafe.ind.br');
+const ogImage = new URL(image, Astro.site ?? 'https://www.pracafe.ind.br');
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.nome,
+  legalName: site.razaoSocial,
+  url: canonical.origin,
+  foundingDate: String(site.fundacao),
+  telephone: site.telefones[0].tel,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.endereco.rua,
+    addressLocality: site.endereco.cidade,
+    addressRegion: site.endereco.uf,
+    postalCode: site.endereco.cep,
+    addressCountry: 'BR',
+  },
+  sameAs: Object.values(site.redes),
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta name="theme-color" content="#23402a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.nome} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+  <body class:list={['min-h-dvh flex flex-col', dark && 'header-dark']}>
+    <a href="#conteudo" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] btn-primary">Ir para o conteúdo</a>
+    <Header dark={dark} />
+    <main id="conteudo" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsFab />
+    <script src="../scripts/motion.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+---
+import { Icon } from 'astro-icon/components';
+import Logo from './Logo.astro';
+import { nav, site, waLink } from '../data/site';
+interface Props { dark?: boolean }
+const { dark = false } = Astro.props;
+const path = Astro.url.pathname;
+---
+<header id="site-header" class:list={['fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-500', dark ? 'text-white' : 'text-verde-900']}>
+  <div class="container-x flex h-[76px] items-center justify-between gap-6">
+    <Logo light={dark} swap height={44} />
+
+    <nav class="hidden lg:flex items-center gap-1" aria-label="Principal">
+      {nav.map((n) => {
+        const active = path === n.href || (n.href !== '/' && path.startsWith(n.href));
+        return (
+          <a href={n.href} class:list={['relative px-4 py-2 text-[15px] font-medium transition-opacity opacity-90 hover:opacity-100', active && 'is-active']}>
+            {n.label}
+            <span class:list={['absolute left-4 right-4 -bottom-0.5 h-0.5 bg-cereja-500 origin-left scale-x-0 transition-transform duration-300', active && 'scale-x-100']}></span>
+          </a>
+        );
+      })}
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href={`tel:${site.telefones[1].tel}`} class="hidden xl:inline-flex items-center gap-2 text-sm font-medium opacity-85 hover:opacity-100 px-3">
+        <Icon name="lucide:phone" class="size-4" /> {site.telefones[1].numero}
+      </a>
+      <a href={waLink()} target="_blank" rel="noopener" class="btn-primary !py-2.5 !px-4 text-sm">
+        <Icon name="tabler:brand-whatsapp" class="size-4" /> <span class="hidden sm:inline">Solicitar orçamento</span><span class="sm:hidden">Orçamento</span>
+      </a>
+      <button id="menu-toggle" class="lg:hidden inline-flex size-11 items-center justify-center rounded-md hover:bg-current/8" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+        <Icon name="lucide:menu" class="size-6" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" class="fixed inset-0 z-40 bg-verde-950 text-white pt-24 px-6 pb-10 flex-col justify-between hidden [&.is-open]:flex" role="dialog" aria-label="Menu">
+  <nav class="flex flex-col gap-1">
+    <a href="/" class="display-md py-3 border-b border-white/10">Início</a>
+    {nav.map((n) => <a href={n.href} class="display-md py-3 border-b border-white/10 flex items-center justify-between">{n.label} <Icon name="lucide:arrow-up-right" class="size-6 text-verde-300" /></a>)}
+    <a href="/trabalhe-conosco" class="py-3 text-white/70">Trabalhe conosco</a>
+  </nav>
+  <div class="space-y-4">
+    <a href={waLink()} target="_blank" rel="noopener" class="btn-primary w-full"><Icon name="tabler:brand-whatsapp" class="size-5" /> WhatsApp {site.whatsapp.numero}</a>
+    <p class="eyebrow text-white/50 text-center">{site.endereco.cidade} · {site.endereco.uf} · desde {site.fundacao}</p>
+  </div>
+</div>
+
+<style>
+  #site-header.is-scrolled { background: rgb(255 255 255 / 0.96); box-shadow: 0 1px 0 rgb(21 41 26 / 0.1); color: var(--color-verde-900); }
+  #site-header a.is-active { font-weight: 600; opacity: 1; }
+</style>

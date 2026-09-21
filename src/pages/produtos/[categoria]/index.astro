@@ -1,0 +1,51 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../../layouts/Base.astro';
+import ProdutoCard from '../../../components/ProdutoCard.astro';
+import BigBagConfigurador from '../../../components/BigBagConfigurador.astro';
+import CTA from '../../../components/CTA.astro';
+import { categorias } from '../../../data/produtos';
+
+export function getStaticPaths() {
+  return categorias.map((c) => ({ params: { categoria: c.slug }, props: { c } }));
+}
+const { c } = Astro.props;
+const idx = categorias.findIndex((x) => x.slug === c.slug);
+const prev = categorias[(idx - 1 + categorias.length) % categorias.length];
+const next = categorias[(idx + 1) % categorias.length];
+---
+<Base title={c.nome} description={`${c.nome} PraCafé: ${c.resumo}`} image={c.capa} dark>
+  <section class="relative bg-verde-950 text-areia-50 overflow-hidden grain" data-parallax-root>
+    <div class="absolute inset-0 weave opacity-60"></div>
+    <img src={c.capa} alt="" class="absolute inset-0 size-full object-cover opacity-20" data-parallax="0.15" />
+    <div class="absolute inset-0 bg-gradient-to-b from-verde-950/40 via-verde-950/70 to-verde-950"></div>
+    <div class="container-x relative pt-36 pb-20 sm:pt-44 sm:pb-28">
+      <nav class="eyebrow text-areia-100/60 flex items-center gap-2 mb-6" aria-label="Você está em" data-reveal="up"><a href="/produtos" class="hover:text-verde-300">Produtos</a><Icon name="lucide:chevron-right" class="size-3" /><span class="text-verde-300">{c.nome}</span></nav>
+      <div class="flex items-start gap-5">
+        <span class="size-14 sm:size-16 shrink-0 rounded-md bg-verde-300 text-verde-950 grid place-items-center" data-reveal="scale"><Icon name={c.icone} class="size-8" /></span>
+        <div>
+          <h1 class="display-xl" data-split="words">{c.nome}</h1>
+          <p class="mt-6 max-w-2xl text-lg text-areia-100/75" data-reveal="up" data-reveal-delay="300">{c.descricao}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x py-16 sm:py-24">
+    <p class="eyebrow text-verde-600 mb-8" data-reveal="up">{c.produtos.length} {c.produtos.length === 1 ? 'produto' : 'produtos'} nesta família</p>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-stagger="90">
+      {c.produtos.map((p) => <ProdutoCard produto={p} categoria={c} />)}
+    </div>
+  </section>
+
+  {c.slug === 'big-bags' && (
+    <section class="bg-areia-100 py-16 sm:py-24"><div class="container-x"><BigBagConfigurador /></div></section>
+  )}
+
+  <section class="container-x py-10 grid sm:grid-cols-2 gap-4">
+    <a href={`/produtos/${prev.slug}`} class="card p-6 flex items-center gap-4 hover:-translate-y-0.5 transition-transform" data-reveal="left"><Icon name="lucide:arrow-left" class="size-5 text-verde-600" /><span><span class="eyebrow text-grafite-500 block">Anterior</span><span class="font-display font-bold text-verde-900">{prev.nome}</span></span></a>
+    <a href={`/produtos/${next.slug}`} class="card p-6 flex items-center justify-end text-right gap-4 hover:-translate-y-0.5 transition-transform" data-reveal="right"><span><span class="eyebrow text-grafite-500 block">Próxima</span><span class="font-display font-bold text-verde-900">{next.nome}</span></span><Icon name="lucide:arrow-right" class="size-5 text-verde-600" /></a>
+  </section>
+
+  <CTA title={`Precisa de ${c.nome.toLowerCase()} em outra medida?`} text="Fabricamos sob encomenda. Envie medida, gramatura, quantidade e impressão que dimensionamos para você." />
+</Base>

@@ -1,0 +1,16 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { Aplicacao } from '../data/site';
+interface Props { app: Aplicacao; tall?: boolean }
+const { app, tall = false } = Astro.props;
+---
+<a href={`/aplicacoes/${app.slug}`} class:list={['group relative overflow-hidden rounded-lg bg-verde-900 text-areia-50 flex flex-col justify-end', tall ? 'min-h-[420px] sm:min-h-[520px]' : 'min-h-[300px] sm:min-h-[340px]']} data-reveal="scale">
+  <img src={app.capa} alt="" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover opacity-70 transition-transform duration-[1200ms] ease-out-expo group-hover:scale-110" />
+  <div class="absolute inset-0 bg-gradient-to-t from-verde-950 via-verde-950/50 to-verde-950/10"></div>
+  <div class="relative p-6 sm:p-7">
+    <span class="size-11 rounded-md bg-verde-300 text-verde-950 grid place-items-center mb-5"><Icon name={app.icone} class="size-5" /></span>
+    <h3 class="font-display font-bold text-2xl tracking-tight">{app.nome}</h3>
+    <p class="mt-2 text-sm text-areia-100/75 leading-relaxed max-w-md">{app.resumo}</p>
+    <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-verde-300">Ver soluções <Icon name="lucide:arrow-right" class="size-4 transition-transform group-hover:translate-x-1" /></span>
+  </div>
+</a>

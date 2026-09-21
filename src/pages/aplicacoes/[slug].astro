@@ -1,0 +1,57 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import ProdutoCard from '../../components/ProdutoCard.astro';
+import CTA from '../../components/CTA.astro';
+import { aplicacoes } from '../../data/site';
+import { resolveProduto } from '../../data/produtos';
+
+export function getStaticPaths() {
+  return aplicacoes.map((a) => ({ params: { slug: a.slug }, props: { a } }));
+}
+const { a } = Astro.props;
+const produtos = a.produtos.map(resolveProduto).filter(Boolean) as NonNullable<ReturnType<typeof resolveProduto>>[];
+const outras = aplicacoes.filter((x) => x.slug !== a.slug);
+---
+<Base title={a.nome} description={a.resumo} image={a.capa} dark>
+  <section class="relative bg-verde-950 text-areia-50 overflow-hidden grain min-h-[70svh] flex items-end" data-parallax-root>
+    <img src={a.capa} alt="" class="absolute inset-0 size-full object-cover opacity-40" data-parallax="0.2" />
+    <div class="absolute inset-0 bg-gradient-to-t from-verde-950 via-verde-950/60 to-verde-950/20"></div>
+    <div class="container-x relative pt-40 pb-16 sm:pb-24">
+      <nav class="eyebrow text-areia-100/60 flex items-center gap-2 mb-6" aria-label="Você está em" data-reveal="up"><a href="/aplicacoes" class="hover:text-verde-300">Aplicações</a><Icon name="lucide:chevron-right" class="size-3" /><span class="text-verde-300">{a.nome}</span></nav>
+      <span class="size-14 rounded-md bg-verde-300 text-verde-950 grid place-items-center mb-6" data-reveal="scale"><Icon name={a.icone} class="size-7" /></span>
+      <h1 class="display-xl max-w-5xl" data-split="words">{a.titulo}</h1>
+      <p class="mt-6 max-w-2xl text-lg text-areia-100/75" data-reveal="up" data-reveal-delay="300">{a.descricao}</p>
+    </div>
+  </section>
+
+  <section class="container-x py-16 sm:py-24 grid gap-10 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <p class="eyebrow text-verde-600 mb-4" data-reveal="up">Destaques</p>
+      <ul class="space-y-4" data-stagger="100">
+        {a.beneficios.map((b) => <li class="flex gap-3 items-start" data-reveal="left"><span class="size-7 shrink-0 rounded-full bg-verde-300 text-verde-950 grid place-items-center mt-0.5"><Icon name="lucide:check" class="size-4" /></span><span class="font-medium text-verde-900">{b}</span></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-3 [grid-auto-rows:140px] sm:[grid-auto-rows:180px]" data-stagger="80">
+      {a.galeria.map((g, i) => <figure class:list={['overflow-hidden rounded-md bg-areia-100', i === 0 && 'col-span-2 row-span-2']} data-reveal="scale"><img src={g} alt="" loading="lazy" class="size-full object-cover hover:scale-105 transition-transform duration-700" /></figure>)}
+    </div>
+  </section>
+
+  <section class="bg-areia-100 py-16 sm:py-24">
+    <div class="container-x">
+      <h2 class="display-md text-verde-900 mb-8" data-split="words">Produtos indicados para {a.nome.toLowerCase()}</h2>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-stagger="90">
+        {produtos.map((p) => <ProdutoCard produto={p} categoria={p.categoria} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="container-x py-16">
+    <p class="eyebrow text-verde-600 mb-4" data-reveal="up">Outros mercados</p>
+    <div class="flex flex-wrap gap-2" data-stagger="50">
+      {outras.map((o) => <a href={`/aplicacoes/${o.slug}`} class="inline-flex items-center gap-2 rounded-full border border-verde-900/15 px-4 py-2 text-sm font-medium hover:bg-verde-900 hover:text-areia-50 transition-colors" data-reveal="up"><Icon name={o.icone} class="size-4" />{o.nome}</a>)}
+    </div>
+  </section>
+
+  <CTA />
+</Base>

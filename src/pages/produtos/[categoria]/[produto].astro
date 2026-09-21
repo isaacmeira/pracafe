@@ -1,0 +1,139 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../../layouts/Base.astro';
+import ProdutoCard from '../../../components/ProdutoCard.astro';
+import BigBagConfigurador from '../../../components/BigBagConfigurador.astro';
+import CTA from '../../../components/CTA.astro';
+import { categorias } from '../../../data/produtos';
+import { waLink, site } from '../../../data/site';
+
+export function getStaticPaths() {
+  return categorias.flatMap((c) => c.produtos.map((p) => ({ params: { categoria: c.slug, produto: p.slug }, props: { c, p } })));
+}
+const { c, p } = Astro.props;
+const relacionados = c.produtos.filter((x) => x.slug !== p.slug).slice(0, 3);
+const msg = `Olá! Gostaria de um orçamento do produto ${p.nome} (cód. ${p.codigo}).`;
+const ld = {
+  '@context': 'https://schema.org', '@type': 'Product', name: p.nome, sku: p.codigo, description: p.resumo, image: p.galeria.map((g) => new URL(g, Astro.site ?? 'https://www.pracafe.ind.br').href),
+  brand: { '@type': 'Brand', name: 'PraCafé' }, category: c.nome, manufacturer: { '@type': 'Organization', name: site.razaoSocial },
+};
+---
+<Base title={p.nome} description={p.resumo} image={p.capa}>
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+
+  <section class="container-x pt-28 sm:pt-36 pb-12">
+    <nav class="eyebrow text-grafite-500 flex flex-wrap items-center gap-2 mb-8" aria-label="Você está em" data-reveal="up">
+      <a href="/produtos" class="hover:text-verde-900">Produtos</a><Icon name="lucide:chevron-right" class="size-3" />
+      <a href={`/produtos/${c.slug}`} class="hover:text-verde-900">{c.nome}</a><Icon name="lucide:chevron-right" class="size-3" />
+      <span class="text-verde-900">{p.nomeCurto}</span>
+    </nav>
+
+    <div class="grid gap-10 lg:grid-cols-12">
+      <!-- galeria -->
+      <div class="lg:col-span-7">
+        <div class="grid grid-cols-4 gap-3" data-stagger="80">
+          <figure class="col-span-4 relative overflow-hidden rounded-lg bg-areia-100 aspect-[4/3] sm:aspect-[16/10]" data-reveal="scale">
+            <img id="galeria-main" src={p.galeria[0] ?? p.capa} alt={p.nome} class="size-full object-cover" />
+            <span class="absolute left-4 top-4 font-mono text-xs bg-verde-950/85 text-areia-50 rounded-full px-3 py-1.5 backdrop-blur">COD {p.codigo}</span>
+          </figure>
+          {p.galeria.length > 1 && p.galeria.map((g, i) => (
+            <button type="button" class:list={['galeria-thumb relative overflow-hidden rounded-md bg-areia-100 aspect-square ring-2 ring-transparent hover:ring-verde-500 transition', i === 0 && 'ring-verde-900']} data-src={g} aria-label={`Ver imagem ${i + 1}`} data-reveal="up">
+              <img src={g} alt="" loading="lazy" class="size-full object-cover" />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- resumo -->
+      <div class="lg:col-span-5 flex flex-col">
+        <p class="eyebrow text-verde-600 flex items-center gap-2 mb-3" data-reveal="up"><Icon name={c.icone} class="size-4" />{c.nome}</p>
+        <h1 class="display-lg text-verde-900" data-split="words">{p.nome}</h1>
+        <p class="mt-5 text-lg text-grafite-700 leading-relaxed" data-reveal="up" data-reveal-delay="250">{p.resumo}</p>
+
+        <ul class="mt-6 flex flex-wrap gap-2" data-stagger="70">
+          {p.destaques.map((d) => <li class="inline-flex items-center gap-1.5 rounded-full bg-verde-300/40 text-verde-950 text-sm font-medium px-3 py-1.5" data-reveal="scale"><Icon name="lucide:check" class="size-4" />{d}</li>)}
+        </ul>
+
+        <dl class="mt-8 divide-y divide-verde-900/10 border-y border-verde-900/10" data-stagger="60">
+          {p.specs.map((s) => <div class="grid grid-cols-[minmax(0,40%)_1fr] gap-4 py-3" data-reveal="up"><dt class="eyebrow text-grafite-500 self-center">{s.label}</dt><dd class="text-sm font-medium text-verde-900">{s.valor}</dd></div>)}
+        </dl>
+
+        <div class="mt-8 flex flex-col sm:flex-row gap-3" data-stagger="100">
+          <a href={waLink(msg)} target="_blank" rel="noopener" class="btn-primary" data-reveal="up"><Icon name="tabler:brand-whatsapp" class="size-5" /> Cotar este produto</a>
+          <a href={`tel:${site.telefones[1].tel}`} class="btn-ghost text-verde-900" data-reveal="up"><Icon name="lucide:phone" class="size-5" /> {site.telefones[1].numero}</a>
+        </div>
+        <p class="mt-4 text-xs text-grafite-500" data-reveal="up">Outras medidas sob encomenda. Informe o produto a embalar, a quantidade e a impressão.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- descrição + variantes -->
+  <section class="bg-areia-100 py-16 sm:py-24">
+    <div class="container-x grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <h2 class="display-md text-verde-900" data-split="words">Sobre o produto</h2>
+        <div class="mt-6 space-y-4 text-grafite-700 leading-relaxed" data-stagger="100">
+          {p.descricao.map((t) => <p data-reveal="up">{t}</p>)}
+        </div>
+        {p.aplicacoes.length > 0 && (
+          <div class="mt-8" data-reveal="up">
+            <p class="eyebrow text-verde-600 mb-3">Aplicações</p>
+            <ul class="flex flex-wrap gap-2">{p.aplicacoes.map((a) => <li class="rounded-full border border-verde-900/15 px-3 py-1.5 text-sm">{a}</li>)}</ul>
+          </div>
+        )}
+      </div>
+      <div class="lg:col-span-7 space-y-8">
+        {p.variantes && (
+          <div>
+            <p class="eyebrow text-verde-600 mb-4" data-reveal="up">Versões</p>
+            <div class="grid sm:grid-cols-2 gap-4" data-stagger="90">
+              {p.variantes.map((v, i) => (
+                <article class="card p-6 hover:shadow-lift hover:-translate-y-0.5 transition-[transform,box-shadow] duration-500" data-reveal="up">
+                  <span class="font-mono text-xs text-grafite-500">0{i + 1}</span>
+                  <h3 class="font-display font-bold text-lg text-verde-900 mt-1">{v.nome}</h3>
+                  <p class="mt-2 text-sm text-grafite-700 leading-relaxed">{v.texto}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        )}
+        {p.medidas && (
+          <div>
+            <p class="eyebrow text-verde-600 mb-4" data-reveal="up">Medidas mais utilizadas</p>
+            <ul class="flex flex-wrap gap-2" data-stagger="40">
+              {p.medidas.map((m) => <li class="font-mono text-sm rounded-md bg-white ring-1 ring-verde-900/10 px-3 py-2" data-reveal="scale">{m}</li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {p.configurador && (
+    <section class="container-x py-16 sm:py-24"><BigBagConfigurador /></section>
+  )}
+
+  {relacionados.length > 0 && (
+    <section class="container-x py-16 sm:py-24">
+      <div class="flex items-end justify-between gap-6 mb-8">
+        <h2 class="display-md text-verde-900" data-split="words">Outros produtos em {c.nome}</h2>
+        <a href={`/produtos/${c.slug}`} class="btn-ghost text-verde-900 shrink-0 hidden sm:inline-flex" data-reveal="up">Ver família <Icon name="lucide:arrow-right" class="size-5" /></a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-stagger="90">{relacionados.map((r) => <ProdutoCard produto={r} categoria={c} />)}</div>
+    </section>
+  )}
+
+  <CTA produto={`${p.nome} (cód. ${p.codigo})`} title={`Quer ${p.nomeCurto.toLowerCase()} na medida da sua operação?`} />
+
+  <script>
+    const main = document.getElementById('galeria-main') as HTMLImageElement | null;
+    document.querySelectorAll<HTMLButtonElement>('.galeria-thumb').forEach((b) => b.addEventListener('click', () => {
+      if (!main) return;
+      main.style.opacity = '0';
+      setTimeout(() => { main.src = b.dataset.src!; main.style.opacity = '1'; }, 150);
+      document.querySelectorAll('.galeria-thumb').forEach((t) => t.classList.remove('ring-verde-900'));
+      b.classList.add('ring-verde-900');
+    }));
+    if (main) main.style.transition = 'opacity .25s ease';
+  </script>
+</Base>

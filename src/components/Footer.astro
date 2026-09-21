@@ -1,0 +1,53 @@
+---
+import { Icon } from 'astro-icon/components';
+import Logo from './Logo.astro';
+import { site, nav, waLink } from '../data/site';
+import { categorias } from '../data/produtos';
+const ano = new Date().getFullYear();
+---
+<footer class="relative bg-verde-950 text-areia-100 overflow-hidden grain">
+  <div class="absolute inset-0 weave opacity-60 pointer-events-none"></div>
+  <div class="container-x relative py-16 sm:py-20">
+    <div class="grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-4 space-y-6" data-reveal="up">
+        <Logo light variant="stacked" height={104} />
+        <p class="text-areia-100/70 max-w-sm leading-relaxed">{site.descricao}</p>
+        <div class="flex gap-3">
+          <a href={site.redes.instagram} target="_blank" rel="noopener" aria-label="Instagram" class="size-11 grid place-items-center rounded-full border border-white/15 hover:bg-verde-300 hover:text-verde-950 hover:border-verde-300 transition-colors"><Icon name="tabler:brand-instagram" class="size-5" /></a>
+          <a href={site.redes.facebook} target="_blank" rel="noopener" aria-label="Facebook" class="size-11 grid place-items-center rounded-full border border-white/15 hover:bg-verde-300 hover:text-verde-950 hover:border-verde-300 transition-colors"><Icon name="tabler:brand-facebook" class="size-5" /></a>
+          <a href={site.redes.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" class="size-11 grid place-items-center rounded-full border border-white/15 hover:bg-verde-300 hover:text-verde-950 hover:border-verde-300 transition-colors"><Icon name="tabler:brand-linkedin" class="size-5" /></a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-3" data-reveal="up" data-reveal-delay="80">
+        <h3 class="eyebrow text-verde-300 mb-5">Produtos</h3>
+        <ul class="space-y-2.5 text-sm">
+          {categorias.map((c) => <li><a href={`/produtos/${c.slug}`} class="text-areia-100/80 hover:text-white inline-flex items-center gap-2"><Icon name={c.icone} class="size-4 text-verde-400" />{c.nome}</a></li>)}
+        </ul>
+      </div>
+
+      <div class="lg:col-span-2" data-reveal="up" data-reveal-delay="160">
+        <h3 class="eyebrow text-verde-300 mb-5">Empresa</h3>
+        <ul class="space-y-2.5 text-sm">
+          {nav.map((n) => <li><a href={n.href} class="text-areia-100/80 hover:text-white">{n.label}</a></li>)}
+          <li><a href="/trabalhe-conosco" class="text-areia-100/80 hover:text-white">Trabalhe conosco</a></li>
+          <li><a href="/revendedores#representante" class="text-areia-100/80 hover:text-white">Seja representante</a></li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-3" data-reveal="up" data-reveal-delay="240">
+        <h3 class="eyebrow text-verde-300 mb-5">Contato</h3>
+        <address class="not-italic text-sm space-y-3 text-areia-100/80">
+          <p class="flex gap-2"><Icon name="lucide:map-pin" class="size-4 mt-0.5 shrink-0 text-verde-400" /><span>{site.endereco.rua}<br />{site.endereco.bairro}, {site.endereco.cidade} · {site.endereco.uf}<br />CEP {site.endereco.cep}</span></p>
+          {site.telefones.map((t) => <p class="flex gap-2"><Icon name="lucide:phone" class="size-4 mt-0.5 shrink-0 text-verde-400" /><a href={`tel:${t.tel}`} class="hover:text-white">{t.numero} <span class="text-areia-100/50">· {t.label}</span></a></p>)}
+          <p class="flex gap-2"><Icon name="lucide:message-circle" class="size-4 mt-0.5 shrink-0 text-verde-400" /><a href={waLink()} target="_blank" rel="noopener" class="hover:text-white">WhatsApp {site.whatsapp.numero}</a></p>
+        </address>
+      </div>
+    </div>
+
+    <div class="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 justify-between text-xs text-areia-100/50">
+      <p>© {ano} {site.razaoSocial} · CNPJ {site.cnpj} · Todos os direitos reservados.</p>
+      <p class="font-mono">Manhuaçu · Matas de Minas · desde {site.fundacao}</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,69 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ProdutoCard from '../components/ProdutoCard.astro';
+import FormPlaceholder from '../components/FormPlaceholder.astro';
+import CTA from '../components/CTA.astro';
+import { site, waLink } from '../data/site';
+import { resolveProduto } from '../data/produtos';
+
+const vantagens = [
+  { icone: 'lucide:factory', titulo: 'Preço de indústria', texto: 'Compra direta da fábrica em Manhuaçu, com condições especiais por volume para atacadistas, revendedores e distribuidores.' },
+  { icone: 'lucide:badge-check', titulo: 'Marca Própria em embalagem de varejo', texto: 'Luvas em pacotes de 12 pares, alças de peneira em pacotes de 10, lâminas em pacotes de 12; panos e sacaria em pacotes de 10.' },
+  { icone: 'lucide:truck', titulo: 'Entrega em MG, ES, BA e RJ', texto: 'Atendemos Minas Gerais, Espírito Santo, Bahia e Rio de Janeiro.' },
+  { icone: 'lucide:printer-check', titulo: 'Sacaria com a marca da revenda', texto: 'Impressão em até 6 cores com a arte do cliente.' },
+  { icone: 'lucide:handshake', titulo: 'Representante comercial', texto: 'Rede de representantes por região; cadastro aberto nesta página.' },
+  { icone: 'lucide:layers', titulo: 'Portfólio completo', texto: 'Oito linhas de produto em um só fornecedor: da sacaria de colheita ao big bag certificado.' },
+];
+const perfis = ['Atacadistas', 'Revendedores', 'Distribuidores', 'Agropecuárias', 'Cooperativas', 'Armazéns gerais', 'Indústrias'];
+const kit = ['luvas-pra-cafe', 'alcas-de-peneiras', 'laminas-para-rocadeiras', 'chicote-branco-leitoso', 'tradicional', 'colheita-de-cafe'].map(resolveProduto).filter(Boolean) as NonNullable<ReturnType<typeof resolveProduto>>[];
+---
+<Base title="Revendedores e Distribuidores" description="Condições de indústria para revendedores, distribuidores, atacadistas e agropecuárias. Marca própria PraCafé e entrega em MG, ES, BA e RJ." dark>
+  <section class="relative bg-verde-950 text-areia-50 overflow-hidden grain" data-parallax-root>
+    <div class="absolute inset-0 weave opacity-60"></div>
+    <img src="/img/aplicacoes/revenda/capa.jpg" alt="" class="absolute inset-0 size-full object-cover opacity-25" data-parallax="0.15" />
+    <div class="absolute inset-0 bg-gradient-to-b from-verde-950/30 via-verde-950/70 to-verde-950"></div>
+    <div class="container-x relative pt-36 pb-20 sm:pt-44 sm:pb-28">
+      <p class="eyebrow text-verde-300 mb-5" data-reveal="up">Programa B2B</p>
+      <h1 class="display-xl max-w-5xl" data-split="words">Ofertas direto da indústria para quem revende.</h1>
+      <p class="mt-7 max-w-2xl text-lg sm:text-xl text-areia-100/75" data-reveal="up" data-reveal-delay="400">Condições especiais para atacadistas, revendedores, distribuidores, indústrias e armazéns gerais. Para pedidos em grandes quantidades, o comercial monta uma proposta sob medida.</p>
+      <div class="mt-9 flex flex-col sm:flex-row gap-3" data-stagger="120">
+        <a href={waLink('Olá! Sou revendedor/distribuidor e gostaria de conhecer as condições de atacado da PraCafé.')} target="_blank" rel="noopener" class="btn-primary" data-reveal="up"><Icon name="tabler:brand-whatsapp" class="size-5" /> Falar com o comercial</a>
+        <a href="#representante" class="btn-ghost" data-reveal="up"><Icon name="lucide:handshake" class="size-5" /> Quero ser representante</a>
+      </div>
+      <ul class="mt-12 flex flex-wrap gap-2" data-stagger="60">
+        {perfis.map((p) => <li class="rounded-full border border-white/15 px-4 py-2 text-sm text-areia-100/80" data-reveal="scale">{p}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="container-x py-20 sm:py-28">
+    <SectionHead eyebrow="Vantagens" title="Condições para revendas e distribuidores." class="mb-12" />
+    <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-stagger="90">
+      {vantagens.map((v) => <li class="card p-7 hover:shadow-lift hover:-translate-y-1 transition-[transform,box-shadow] duration-500" data-reveal="up"><span class="size-12 rounded-md bg-verde-900 text-verde-300 grid place-items-center"><Icon name={v.icone} class="size-6" /></span><h3 class="font-display font-bold text-xl text-verde-900 mt-5">{v.titulo}</h3><p class="text-sm text-grafite-700 leading-relaxed mt-2">{v.texto}</p></li>)}
+    </ul>
+  </section>
+
+  <section class="bg-areia-100 py-20 sm:py-28">
+    <div class="container-x">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <SectionHead eyebrow="Marca Própria" title="Itens de colheita em embalagem de varejo." text="Linha Marca Própria e consumíveis de colheita para o balcão da agropecuária." />
+        <a href="/produtos/marca-propria" class="btn-dark shrink-0" data-reveal="up">Ver Marca Própria <Icon name="lucide:arrow-right" class="size-5" /></a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-stagger="80">{kit.map((p) => <ProdutoCard produto={p} categoria={p.categoria} />)}</div>
+    </div>
+  </section>
+
+  <section id="representante" class="container-x py-20 sm:py-28 grid gap-12 lg:grid-cols-12 scroll-mt-20">
+    <div class="lg:col-span-5">
+      <SectionHead eyebrow="Seja nosso representante" title="Cadastro de representantes comerciais." text="Representantes com atuação em agropecuárias, cooperativas, armazéns e indústria em MG, ES, BA e RJ. Preencha o cadastro e o comercial entra em contato." />
+      <ul class="mt-8 space-y-3 text-verde-900" data-stagger="100">
+        {['Carteira ativa no agro ou na indústria', 'Região de atuação definida', 'Empresas já representadas informadas no cadastro'].map((t) => <li class="flex gap-3 items-start" data-reveal="left"><Icon name="lucide:circle-check" class="size-5 text-verde-600 shrink-0 mt-0.5" />{t}</li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-7"><FormPlaceholder tipo="representante" titulo="Cadastro de representante" /></div>
+  </section>
+
+  <CTA title="Pedido em grande quantidade? Fale direto com o comercial." text={`Televendas ${site.telefones[1].numero} · Comercial ${site.telefones[2].numero}`} />
+</Base>
